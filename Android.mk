@@ -1532,29 +1532,6 @@ $(all_odm_mac_perms_files)
 odm_mac_perms_keys.tmp :=
 all_odm_mac_perms_files :=
 
-#################################
-include $(CLEAR_VARS)
-LOCAL_MODULE := sepolicy_tests
-LOCAL_MODULE_CLASS := ETC
-LOCAL_MODULE_TAGS := tests
-
-include $(BUILD_SYSTEM)/base_rules.mk
-
-all_fc_files := $(built_plat_fc) $(built_vendor_fc)
-ifdef BOARD_ODM_SEPOLICY_DIRS
-all_fc_files += $(built_odm_fc)
-endif
-all_fc_args := $(foreach file, $(all_fc_files), -f $(file))
-
-sepolicy_tests := $(intermediates)/sepolicy_tests
-$(sepolicy_tests): ALL_FC_ARGS := $(all_fc_args)
-$(sepolicy_tests): PRIVATE_SEPOLICY := $(built_sepolicy)
-$(sepolicy_tests): $(HOST_OUT_EXECUTABLES)/sepolicy_tests $(all_fc_files) $(built_sepolicy)
-	@mkdir -p $(dir $@)
-	$(hide) $(HOST_OUT_EXECUTABLES)/sepolicy_tests -l $(HOST_OUT)/lib64/libsepolwrap.$(SHAREDLIB_EXT) \
-		$(ALL_FC_ARGS)  -p $(PRIVATE_SEPOLICY)
-	$(hide) touch $@
-
 ##################################
 ifeq ($(PRODUCT_SEPOLICY_SPLIT),true)
 
